@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Asmaul Husna</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Quicksand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="container py-4 fade-in">
+  <h2 class="text-center mb-4">🌙 Asmaul Husna</h2>
+  <div id="list-asma" class="row g-3"></div>
+
+  <script>
+    fetch("https://api.aladhan.com/v1/asmaAlHusna")
+      .then(res => res.json())
+      .then(json => {
+        const container = document.getElementById("list-asma");
+        const data = json.data;
+
+        data.forEach(item => {
+          const col = document.createElement("div");
+          col.className = "col-6 col-md-4 col-lg-3";
+
+          col.innerHTML = `
+            <div class="card-asma">
+              <div class="arabic">${item.name}</div>
+              <div class="latin">${item.transliteration}</div>
+              <div class="arti">${item.en.meaning}</div>
+            </div>
+          `;
+          container.appendChild(col);
+        });
+      })
+      .catch(err => {
+        console.error("Gagal memuat data:", err);
+        document.getElementById("list-asma").innerHTML = `
+          <div class="alert alert-danger">Gagal memuat Asmaul Husna</div>`;
+      });
+  </script>
+</body>
+</html>
